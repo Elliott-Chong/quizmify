@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  games         Game[]
+  accounts      Account[]
+  sessions      Session[]
+}
+
+enum GameType {
+  mcq
+  open_ended
+}
+
+model Game {
+  id          String     @id @default(cuid())
+  userId      String
+  questions   Question[]
+  timeStarted DateTime
+  topic       String
+  timeEnded   DateTime?
+  gameType    GameType
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model topic_count {
+  id    String @id @default(cuid())
+  topic String @unique
+  count Int
+}
+
+model Question {
+  id                String   @id @default(cuid())
+  question          String
+  answer            String
+  gameId            String
+  options           Json? // for mcq questions
+  percentageCorrect Float? // for open_ended questions
+  isCorrect         Boolean? // for mcq questions
+  questionType      GameType
+  userAnswer        String?
+
+  game Game @relation(fields: [gameId], references: [id])
+
+  @@index([gameId])
+}

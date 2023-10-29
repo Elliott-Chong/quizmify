@@ -27,7 +27,7 @@ const DetailsDialog = (props: Props) => {
         <DialogHeader>
           <DialogTitle className="text-2xl">Welcome to Quizmify!</DialogTitle>
           <DialogDescription>
-            <div className="flex items-center gap-3 my-2">
+            {/* <div className="flex items-center gap-3 my-2">
               <p className="flex items-center">
                 <Github className="w-5 h-5" />
                 <Link
@@ -46,7 +46,7 @@ const DetailsDialog = (props: Props) => {
                   YouTube
                 </Link>
               </p>
-            </div>
+            </div> */}
             <p className="my-2 mt-4 ">
               Are you tired of mundane and repetitive quizzes? Say goodbye to
               the ordinary and embrace the extraordinary with Quizmefy! Our

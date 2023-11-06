@@ -1,25 +1,17 @@
-# fly.toml file generated for spring-wood-6082 on 2023-11-06T14:17:44+08:00
+# fly.toml app configuration file generated for quizzzy on 2023-11-06T06:41:39Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-app = "spring-wood-6082"
-kill_signal = "SIGINT"
-kill_timeout = 5
-mounts = []
-processes = []
+app = "quizzzy"
+primary_region = "sin"
 
-[[services]]
-  internal_port = 8080
+[build]
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
   processes = ["app"]
-  protocol = "tcp"
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
-
-  [[services.ports]]
-    force_https = true
-    handlers = ["http"]
-    port = 80
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
